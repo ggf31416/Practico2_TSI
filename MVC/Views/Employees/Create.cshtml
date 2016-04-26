@@ -1,0 +1,99 @@
+﻿@model Shared.Entities.EmployeeDTO
+
+@{
+    ViewBag.Title = "TSI Práctico 2";
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#hourly_div').toggle(false);
+            $("#emp_type_select").change(function () {
+                $('#salary_div').toggle(this.value == 'True');
+                $('#hourly_div').toggle(this.value != 'True');
+            });
+        });
+
+    </script>
+
+
+
+
+
+
+    @using (Html.BeginForm("addEmployee", "employees"))
+    {
+        @Html.AntiForgeryToken()
+
+        <fieldset name="Formulario">
+            <legend>Formulario de Alta</legend>
+            <div class="form-horizontal">
+                <h4>Alta de Empleados</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.Label("Nombre", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Fecha de Inicio:", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Tipo de Contrato", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.DropDownListFor(model => model.isFullTime, new SelectList(new List<Object>{
+                                new {value = true,text= "Full time"},
+                                new {value = false, text = "Part Time"}
+                            },"value","text"), new { @id = "emp_type_select" })
+                            @Html.ValidationMessageFor(model => model.isFullTime, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="form-group" id="salary_div">
+                    @Html.Label("Salario:", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Salary, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Salary, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group" id="hourly_div">
+                    @Html.Label("Tasa horaria:", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.HourlyRate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.HourlyRate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    }
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+
